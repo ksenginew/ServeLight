@@ -42,7 +42,7 @@ now run sl (ServeLight)
 python -m sl --app=app:app
 ```
 
-view example for more...
+view [examples](https://github.com/Ksengine/ServeLight/examples) for more...
 **View Documentaion***
 ### License
-Code and documentation are available according to the MIT License (see  [LICENSE]()).
+Code and documentation are available according to the MIT License (see  [LICENSE](https://github.com/Ksengine/ServeLight/LICENSE)).
