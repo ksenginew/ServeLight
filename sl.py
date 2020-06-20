@@ -85,7 +85,11 @@ class WSGIHandler(BaseHTTPRequestHandler):
         # Construct a response and send it back to the client
 
         self.finish_response(result)
-
+    def uni(self,string):
+        try:
+            return unicode(string, "utf-8")
+        except:
+            return result
     def get_environ(self):
         env = {}
 
@@ -97,7 +101,7 @@ class WSGIHandler(BaseHTTPRequestHandler):
 
         env['wsgi.version'] = (1, 0)
         env['wsgi.url_scheme'] = 'http'
-        env['wsgi.input'] = StringIO(unicode(self.requestline, "utf-8"))
+        env['wsgi.input'] = StringIO(self.uni(self.requestline))
         env['wsgi.errors'] = sys.stderr
         env['wsgi.multithread'] = False
         env['wsgi.multiprocess'] = False
