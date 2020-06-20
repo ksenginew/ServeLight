@@ -85,11 +85,13 @@ class WSGIHandler(BaseHTTPRequestHandler):
         # Construct a response and send it back to the client
 
         self.finish_response(result)
+
     def uni(self,string):
         try:
             return unicode(string, "utf-8")
         except:
-            return result
+            return string
+
     def get_environ(self):
         env = {}
 
