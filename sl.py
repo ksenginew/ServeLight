@@ -8,17 +8,18 @@ socket, dispatching the requests to a handler.
 """
 
 from __future__ import print_function
-import io
 try:
     import http.client as status
     from http.server import HTTPServer, BaseHTTPRequestHandler, \
         SimpleHTTPRequestHandler
     from socketserver import ThreadingMixIn
+    from io import StringIO
 except:
     import httplib as status
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
     from SimpleHTTPServer import SimpleHTTPRequestHandler
     from SocketServer import ThreadingMixIn
+    from StringIO import StringIO
 import sys
 
 __version__ = '1.0.0'
@@ -96,7 +97,7 @@ class WSGIHandler(BaseHTTPRequestHandler):
 
         env['wsgi.version'] = (1, 0)
         env['wsgi.url_scheme'] = 'http'
-        env['wsgi.input'] = io.StringIO(self.requestline)
+        env['wsgi.input'] = StringIO(unicode(self.requestline, "utf-8"))
         env['wsgi.errors'] = sys.stderr
         env['wsgi.multithread'] = False
         env['wsgi.multiprocess'] = False
