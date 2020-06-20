@@ -23,7 +23,7 @@ with open(path.join(here, 'README.md')) as f:
 
 setup(
     name='ServeLight',
-    version='1.0.0',
+    version='1.0.1',
     author='Kavindu Santhusa',
     author_email='kavindusanthusa@gmail.com',
     license='MIT',

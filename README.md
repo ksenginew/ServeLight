@@ -4,13 +4,15 @@
 > basic security checks.
 
 One class, Server or WSGI Server creates and listens at the HTTP 
-socket, dispatching the requests to a handler. Code to create and run the server looks like this:
-.. code-block:: python
+socket, dispatching the requests to a handler. Code to create and run the server looks like this:\
+
+```python
 def run(server_class=Server, handler_class=BaseHandler):
     server_address = ('', 8000)
     httpd = server_class(server_address, handler_class)
     httpd.serve_forever()
 run()
+```
 
  - fast ( It's very fast )
  - simple ( around 150 lines )
@@ -21,7 +23,8 @@ run()
  
 > Flask, Django, Pyramid, Bottle supported
  ### Example: "Hello World"
-.. code-block:: python
+ 
+```python
 def app(environ, start_response):
     ""A barebones WSGI application.
     This is a starting point for your own Web framework :)
@@ -30,11 +33,14 @@ def app(environ, start_response):
     response_headers = [('Content-Type', 'text/plain')]
     start_response(status, response_headers)
     return [b'Hello world from a simple WSGI application!\n']
+```
 
 save above code as app.py
 now run sl (ServeLight)
-.. code-block:: bash
+
+```bash
 python -m sl --app=app:app
+```
 
 view example for more...
 **View Documentaion***
