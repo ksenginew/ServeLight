@@ -45,4 +45,4 @@ python -m sl --app=app:app
 view [examples](https://github.com/Ksengine/ServeLight/blob/master/examples) for more...
 **View Documentaion***
 ### License
-Code and documentation are available according to the MIT License (see  [LICENSE](https://github.com/Ksengine/ServeLight/blob/master/LICENSE.txt)).
+Code and documentation are available according to the MIT License (see  [LICENSE](https://github.com/Ksengine/ServeLight/blob/master/LICENSE)).
