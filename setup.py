@@ -22,8 +22,8 @@ with open(path.join(here, 'README.md')) as f:
 ## Setup
 
 setup(
-    name='ServeLight',
-    version='1.0.1',
+    name='ServerLight',
+    version='2.0.0',
     author='Kavindu Santhusa',
     author_email='kavindusanthusa@gmail.com',
     license='MIT',

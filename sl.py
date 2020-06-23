@@ -10,54 +10,29 @@ socket, dispatching the requests to a handler.
 from __future__ import print_function
 try:
     import http.client as status
-    from http.server import HTTPServer, BaseHTTPRequestHandler, \
-        SimpleHTTPRequestHandler
+    from http.server import HTTPServer as Server, BaseHTTPRequestHandler as BaseHandler, SimpleHTTPRequestHandler as SimpleHandler
     from socketserver import ThreadingMixIn
     from io import StringIO
+    from urllib import parse as urllib
 except:
     import httplib as status
-    from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-    from SimpleHTTPServer import SimpleHTTPRequestHandler
+    from BaseHTTPServer import HTTPServer as Server, BaseHTTPRequestHandler as BaseHandler
+    from SimpleHTTPServer import SimpleHTTPRequestHandler as SimpleHandler
     from SocketServer import ThreadingMixIn
     from StringIO import StringIO
+    import urllib
 import sys
 
-__version__ = '1.0.0'
+__version__ = '1.1.3'
 
 
-class Server(HTTPServer):
-
-    """This class builds on the HTTPServer class. This is only a wrapper. The 
-     server is accessible by the handler, typically through the handler’s
-     server instance variable."""
-
-
-class ThreadingServer(ThreadingMixIn, HTTPServer):
+class ThreadingServer(ThreadingMixIn, Server):
 
     """This class is identical to Server but uses threads to handle 
     requests by using the ThreadingMixIn. This is useful to handle web 
     browsers pre-opening sockets, on which Server would wait indefinitely."""
 
-
-class SimpleHandler(SimpleHTTPRequestHandler):
-
-    """This class serves files from the current directory and below, 
-    directly mapping the directory structure to HTTP requests.
-    A lot of the work, such as parsing the request, is done by the base 
-    class BaseHandler. This class implements the do_GET() 
-    and do_HEAD() functions."""
-
-
-class BaseHandler(BaseHTTPRequestHandler):
-
-    """This class is used to handle the HTTP requests that arrive at the
-     server. By itself, it cannot respond to any actual HTTP requests; 
-     it must be subclassed to handle each request method (e.g. GET or 
-     POST). BaseHandler provides a number of class and instance
-      variables, and methods for use by subclasses."""
-
-
-class WSGIServer(HTTPServer):
+class WSGIServer(Server):
 
     """This class builds on the HTTPServer class. But it's changed to a 
     WSGI server.This can work with any WSGI web framework. The 
@@ -67,8 +42,11 @@ class WSGIServer(HTTPServer):
     def set_app(self, application):
         self.application = application
 
+    def get_app(self):
+        return self.application
 
-class WSGIHandler(BaseHTTPRequestHandler):
+
+class WSGIHandler(BaseHandler):
 
     """This class is used to handle the HTTP requests that arrive at the
      server. BaseHandler provides a number of class and instance
@@ -85,13 +63,13 @@ class WSGIHandler(BaseHTTPRequestHandler):
         # Construct a response and send it back to the client
 
         self.finish_response(result)
-
+    
     def uni(self,string):
         try:
             return unicode(string, "utf-8")
         except:
             return string
-
+            
     def get_environ(self):
         env = {}
 
@@ -110,14 +88,43 @@ class WSGIHandler(BaseHTTPRequestHandler):
         env['wsgi.run_once'] = False
 
         # Required CGI variables
-
+        env['GATEWAY_INTERFACE'] = 'CGI/1.1'
         env['REQUEST_METHOD'] = self.requestline  # GET
-        env['PATH_INFO'] = self.path  # /hello
-        env['SERVER_NAME'] = self.client_address[0]  # localhost
-        env['SERVER_PORT'] = str(self.client_address[1])  # 8888
-        env['SCRIPT_NAME'] = __name__
+        env['SERVER_NAME'] = self.server.server_name  # localhost
+        env['SERVER_PORT'] = str(self.server.server_port)  # 8888
+        env['SCRIPT_NAME'] = ""
         env['SERVER_PROTOCOL'] = self.request_version
-        env['wsgi.version'] = '1.0.1'
+        env['SERVER_SOFTWARE'] = self.server_version
+        env['REQUEST_METHOD'] = self.command
+        if '?' in self.path:
+            path,query = self.path.split('?',1)
+        else:
+            path,query = self.path,''
+
+        env['PATH_INFO'] = urllib.unquote(path)
+        env['QUERY_STRING'] = query
+        if isinstance(self.client_address, tuple):
+            host = self.address_string()
+            if host != self.client_address[0]:
+                env['REMOTE_HOST'] = host
+            env['REMOTE_ADDR'] = self.client_address[0]
+            env['REMOTE_PORT'] = self.client_address[1] 
+        if self.headers.get('content-type') is None:
+            env['CONTENT_TYPE'] = self.headers.get_content_type()
+        else:
+            env['CONTENT_TYPE'] = self.headers['content-type']
+
+        length = self.headers.get('content-length')
+        if length:
+            env['CONTENT_LENGTH'] = length
+        for k, v in self.headers.items():
+            k=k.replace('-','_').upper(); v=v.strip()
+            if k in env:
+                continue                    # skip content length, type,etc.  
+            if 'HTTP_'+k in env:
+                env['HTTP_'+k] += ','+v     # comma-separate multiple headers
+            else:
+                env['HTTP_'+k] = v
         return env
 
     def start_response(
