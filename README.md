@@ -1,7 +1,5 @@
 # ServerLight
 **This module defines classes for implementing HTTP/WSGI servers (Web servers).**
-> Warning : This is not recommended for production. It only implements
-> basic security checks.
 
 One class, Server or WSGI Server creates and listens at the HTTP 
 socket, dispatching the requests to a handler. Code to create and run the server looks like this:\
