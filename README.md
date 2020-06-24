@@ -1,4 +1,7 @@
 # ServerLight
+
+[![Downloads](https://pepy.tech/badge/servelight)](https://pepy.tech/project/servelight)
+
 **This module defines classes for implementing HTTP/WSGI servers (Web servers).**
 
 >> This is a fork of wsgiref(official wsgi server of python)
