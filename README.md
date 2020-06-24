@@ -1,6 +1,9 @@
 # ServerLight
 **This module defines classes for implementing HTTP/WSGI servers (Web servers).**
 
+>> This is a fork of wsgiref(official wsgi server of python)
+>> But improved and it gives updated wsgi(PEP 3333) server to python2 
+
 One class, Server or WSGI Server creates and listens at the HTTP 
 socket, dispatching the requests to a handler. Code to create and run the server looks like this:\
 
@@ -12,14 +15,13 @@ def run(server_class=Server, handler_class=BaseHandler):
 run()
 ```
 
- - fast ( It's very fast )
- - simple ( around 150 lines )
+ - simple
  - lightweight (simple and lightweight )
- -  [WSGI](http://www.wsgi.org/) ( supports web server gateway interface )
- -  micro web-server ( can use as a traditional server )
+ - [WSGI](http://www.wsgi.org/) ( supports web server gateway interface )
+ - micro web-server ( can use as a traditional server )
  - with web frameworks (any  [WSGI](http://www.wsgi.org/)  framework supported)
  
-> Flask, Django, Pyramid, Bottle supported
+> Flask, Django, Pyramid, Bottle ect supported
  ### Example: "Hello World"
  
 ```python
