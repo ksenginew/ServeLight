@@ -22,8 +22,8 @@ with open(path.join(here, 'README.md')) as f:
 ## Setup
 
 setup(
-    name='ServerLight',
-    version='2.0.0',
+    name='ServeLight',
+    version='3.0.1',
     author='Kavindu Santhusa',
     author_email='kavindusanthusa@gmail.com',
     license='MIT',
@@ -36,10 +36,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     platforms='any',
-    provides=['ServerLight'],
-    install_requires=[],
-    py_modules=['sl'],
-    scripts=['sl.py'],
+    packages=["sl"],
     zip_safe=True,
     classifiers=[
         'Intended Audience :: Developers',
