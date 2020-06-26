@@ -13,7 +13,7 @@ module.  See also the BaseHTTPServer module docs for other API information.
 from __future__ import print_function
 
 import sys
-from wsgiref.handlers import SimpleHandler
+from .handlers import SimpleHandler
 from platform import python_implementation
 try:
     import http.client as status
@@ -28,7 +28,7 @@ except:
 
 
 __version__ = "3.0.1"
-__all__ = ['WSGIServer', 'WSGIRequestHandler', 'demo_app', 'make_server']
+__all__ = ['WSGIServer', 'ThreadingWSGIServer', 'WSGIRequestHandler', 'demo_app', 'make_server']
 
 
 server_version = "WSGIServer/" + __version__
@@ -81,7 +81,7 @@ class WSGIServer(HTTPServer):
 
 class WSGIRequestHandler(BaseHTTPRequestHandler):
 
-    server_version = "WSGIServer/" + __version__
+    server_version = "ServerLight/" + __version__
 
     def get_environ(self):
         env = self.server.base_environ.copy()
@@ -179,36 +179,3 @@ def make_server(
     return server
 
 
-if __name__ == '__main__':
-    import argparse
-    import os
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--app', '-a', help='App for Run as WSGI Server'
-                        )
-    parser.add_argument(
-        'port',
-        action='store',
-        default=8000,
-        type=int,
-        nargs='?',
-        help='Specify alternate port [default: 8000]',
-        )
-    args = parser.parse_args()
-    if args.app:
-        (module, application) = args.app.split(':')
-        module = __import__(module)
-        application = getattr(module, application)
-        httpd = make_server(('', args.port), application)
-        print('WSGIServer: Serving HTTP on port {PORT} ...\n'.format(PORT=args.port))
-        try:
-            httpd.serve_forever()
-        except:
-            print('    WSGIServer: Server Stopped')
-    else:
-        httpd = make_server('', args.port, demo_app)
-        sa = httpd.socket.getsockname()
-        print("Serving HTTP on", sa[0], "port", sa[1], "...")
-        try:
-            httpd.serve_forever()
-        except:
-            print('    WSGIServer: Server Stopped')
