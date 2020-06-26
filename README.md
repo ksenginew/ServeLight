@@ -29,7 +29,7 @@ run()
  
 ```python
 def app(environ, start_response):
-    ""A barebones WSGI application.
+    """A barebones WSGI application.
     This is a starting point for your own Web framework :)
     """
     status = '200 OK'
