@@ -31,7 +31,7 @@ __version__ = "3.0.1"
 __all__ = ['WSGIServer', 'ThreadingWSGIServer', 'WSGIRequestHandler', 'demo_app', 'make_server']
 
 
-server_version = "WSGIServer/" + __version__
+server_version = "ServeLight/" + __version__
 sys_version = python_implementation() + "/" + sys.version.split()[0]
 software_version = server_version + ' ' + sys_version
 
