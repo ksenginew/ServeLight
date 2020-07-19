@@ -25,7 +25,7 @@ except:
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
     from SocketServer import ThreadingMixIn
     import urllib
-
+from wsocket import WebSocketHandler
 
 __version__ = "3.0.1"
 __all__ = ['WSGIServer', 'ThreadingWSGIServer', 'WSGIRequestHandler', 'demo_app', 'make_server']
