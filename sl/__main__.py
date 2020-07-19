@@ -18,7 +18,7 @@ if __name__ == '__main__':
         (module, application) = args.app.split(':')
         module = __import__(module)
         application = getattr(module, application)
-        httpd = make_server(('', args.port), application)
+        httpd = make_server('', args.port, application)
         print('WSGIServer: Serving HTTP on port {PORT} ...\n'.format(PORT=args.port))
         try:
             httpd.serve_forever()
