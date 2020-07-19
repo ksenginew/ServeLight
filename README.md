@@ -44,7 +44,7 @@ now run sl (ServeLight)
 ```bash
 python -m sl --app=app:app
 ```
-
+view [Docs](https://github.com/Ksengine/ServeLight/blob/master/docs.md) for more...
 view [examples](https://github.com/Ksengine/ServeLight/blob/master/examples) for more...
 **View Documentaion***
 ### License
