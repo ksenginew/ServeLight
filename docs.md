@@ -50,6 +50,7 @@ This routine is intended to make it easier for unit tests of WSGI servers and ap
 
 Example usage:
 
+```
 from sl.util import setup_testing_defaults
 from sl.server import make_server
 
@@ -70,7 +71,7 @@ def simple_app(environ, start_response):
 with make_server('', 8000, simple_app) as httpd:
     print("Serving on port 8000...")
     httpd.serve_forever()
-
+```
 In addition to the environment functions above, the  `sl.util` module also provides these miscellaneous utilities:
 
 `sl.util.``is_hop_by_hop`(_header_name_)
@@ -84,7 +85,7 @@ A wrapper to convert a file-like object to an  [iterator](https://docs.python.or
 If  _filelike_  has a  `close()`  method, the returned object will also have a  `close()`  method, and it will invoke the  _filelike_  object’s  `close()`  method when called.
 
 Example usage:
-
+```
 from io import StringIO
 from sl.util import FileWrapper
 
@@ -94,7 +95,7 @@ wrapper = FileWrapper(filelike, blksize=5)
 
 for chunk in wrapper:
     print(chunk)
-
+```
 Deprecated since version 3.8: Support for  [`sequence  protocol`](https://docs.python.org/3/reference/datamodel.html#object.__getitem__ "object.__getitem__")  is deprecated.
 
 ## `sl.headers`  – WSGI response header tools
@@ -144,7 +145,7 @@ This module implements a simple HTTP server (based on  `http.server`) that serve
 Create a new WSGI server listening on  _host_  and  _port_, accepting connections for  _app_. The return value is an instance of the supplied  _server_class_, and will process requests using the specified  _handler_class_.  _app_  must be a WSGI application object, as defined by  [**PEP 3333**](https://www.python.org/dev/peps/pep-3333).
 
 Example usage:
-
+```
 from sl.server import make_server, demo_app
 
 with make_server('', 8000, demo_app) as httpd:
@@ -157,7 +158,7 @@ with make_server('', 8000, demo_app) as httpd:
     httpd.handle_request()
 
 `sl.server.``demo_app`(_environ_,  _start_response_)[]
-
+```
 This function is a small but complete WSGI application that returns a text page containing the message “Hello world!” and a list of the key/value pairs provided in the  _environ_  parameter. It’s useful for verifying that a WSGI server (such as  `sl.server` ) is able to run a simple WSGI application correctly.
 
 _class_ `sl.server.``WSGIServer`(_server_address_,  _RequestHandlerClass_)
@@ -213,7 +214,7 @@ Any detected nonconformance results in an  `AssertionError`  being raised; note,
 This wrapper may also generate output using the  `warnings`  module to indicate behaviors that are questionable but which may not actually be prohibited by  [**PEP 3333**](https://www.python.org/dev/peps/pep-3333). Unless they are suppressed using Python command-line options or the  [`warnings`](https://docs.python.org/3/library/warnings.html#module-warnings "warnings: Issue warning messages and control their disposition.")  API, any such warnings will be written to  `sys.stderr`  (_not_  `wsgi.errors`, unless they happen to be the same object).
 
 Example usage:
-
+```
 from sl.validate import validator
 from sl.server import make_server
 
@@ -235,7 +236,7 @@ def simple_app(environ, start_response):
     with make_server('', 8000, validator_app) as httpd:
         print("Listening on port 8000....")
         httpd.serve_forever()
-
+```
 ## `sl.handlers`  – server/gateway base classes
 
 This module provides base handler classes for implementing WSGI servers and gateways. These base classes handle most of the work of communicating with a WSGI application, as long as they are given a CGI-like environment, along with input, output, and error streams.
@@ -400,7 +401,6 @@ Transcode CGI variables from  `os.environ`  to  [**PEP 3333**](https://www.pytho
 
 If you are implementing a CGI-based handler of your own, you probably want to use this routine instead of just copying values out of  `os.environ`  directly.
 
-New in version 3.2.
 
 ## Examples
 
