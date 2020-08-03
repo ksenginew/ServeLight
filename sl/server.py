@@ -15,16 +15,24 @@ from __future__ import print_function
 import sys
 from .handlers import SimpleHandler
 from platform import python_implementation
-try:
+try: #Py3
     import http.client as status
     from http.server import HTTPServer, BaseHTTPRequestHandler
     from socketserver import ThreadingMixIn
     from urllib import parse as urllib
-except:
+except: #Py2
     import httplib as status
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
     from SocketServer import ThreadingMixIn
     import urllib
+
+try:
+    from socketserver import ForkingMixIn # Forking Not Supported Py3
+except:
+    try:
+        from SocketServer import ForkingMixIn # Forking Not Supported Py2
+    except:
+        class ForkingMixIn(object):pass # Forking Not Supported
 
 __version__ = "3.0.1"
 __all__ = ['WSGIServer', 'ThreadingWSGIServer', 'WSGIRequestHandler', 'demo_app', 'make_server']
@@ -51,7 +59,10 @@ class ServerHandler(SimpleHandler):
 
 class WSGIServer(HTTPServer):
 
-    """BaseHTTPServer that implements the Python WSGI protocol"""
+    """
+    BaseHTTPServer that implements the Python WSGI protocol
+    Simple single-threaded, single-process WSGI server.
+    """
 
     application = None
 
@@ -79,7 +90,9 @@ class WSGIServer(HTTPServer):
 
 
 class WSGIRequestHandler(BaseHTTPRequestHandler):
-
+    
+    """A request handler that implements WSGI dispatching."""
+    
     server_version = "ServerLight/" + __version__
 
     def get_environ(self):
@@ -151,7 +164,17 @@ class ThreadingWSGIServer(ThreadingMixIn, WSGIServer):
 
     """This class is identical to WSGIServer but uses threads to handle 
     requests by using the ThreadingMixIn. This is useful to handle web 
-    browsers pre-opening sockets, on which Server would wait indefinitely."""
+    browsers pre-opening sockets, on which Server would wait indefinitely.
+    """
+
+
+class ForkingWSGIServer(ForkingMixIn, BaseWSGIServer):
+
+    """A WSGI server that does forking.
+    This class is identical to WSGIServer but handle each request in a new process 
+    using the ForkingMixIn. This is useful to handle web 
+    browsers pre-opening sockets, on which Server would wait indefinitely.
+    """
 
 
 def demo_app(environ,start_response):
