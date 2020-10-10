@@ -1,11 +1,10 @@
-# ServerLight
+# ServeLight
 
 [![Downloads](https://pepy.tech/badge/servelight)](https://pepy.tech/project/servelight)
 
 **This module defines classes for implementing HTTP/WSGI servers (Web servers).**
-
->> This is a fork of wsgiref(official wsgi server of python)
->> But improved and it gives updated wsgi(PEP 3333) server to python2 
+> Warning : This is not recommended for production. It only implements
+> basic security checks.
 
 One class, Server or WSGI Server creates and listens at the HTTP 
 socket, dispatching the requests to a handler. Code to create and run the server looks like this:\
@@ -18,18 +17,19 @@ def run(server_class=Server, handler_class=BaseHandler):
 run()
 ```
 
- - simple
- - lightweight (simple and lightweight )
+ - fast ( It's very fast )
+ - simple ( modified version of simple wsgiref )
+ - lightweight ( lightweight because simple )
  - [WSGI](http://www.wsgi.org/) ( supports web server gateway interface )
  - micro web-server ( can use as a traditional server )
  - with web frameworks (any  [WSGI](http://www.wsgi.org/)  framework supported)
  
-> Flask, Django, Pyramid, Bottle ect supported
+> Flask, Django, Pyramid, Bottle supported
  ### Example: "Hello World"
  
 ```python
 def app(environ, start_response):
-    """A barebones WSGI application.
+    ""A barebones WSGI application.
     This is a starting point for your own Web framework :)
     """
     status = '200 OK'
@@ -44,8 +44,12 @@ now run sl (ServeLight)
 ```bash
 python -m sl --app=app:app
 ```
-view [Docs](https://github.com/Ksengine/ServeLight/blob/master/docs.md) for more...
+
 view [examples](https://github.com/Ksengine/ServeLight/blob/master/examples) for more...
-**View Documentaion***
+
+**View [Documentaion](https://servelight2020.gitbook.io)***
+
+**Report [Issues(https://github.com/Ksengine/ServeLight/issues)***
+
 ### License
 Code and documentation are available according to the MIT License (see  [LICENSE](https://github.com/Ksengine/ServeLight/blob/master/LICENSE)).
